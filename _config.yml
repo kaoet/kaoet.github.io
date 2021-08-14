@@ -27,10 +27,11 @@ locale: zh-CN
 markdown: kramdown
 remote_theme: mmistakes/minimal-mistakes
 # Outputting
-permalink: /:categories/:year/:month/:day/:title:output_ext
+permalink: /:year/:month/:day/:title
 paginate: 10 # amount of posts to show
 paginate_path: /page:num/
 timezone: Asia/Shanghai
+github: [metadata]
 
 include:
 - _pages
@@ -84,11 +85,13 @@ defaults:
     type: posts
   values:
     layout: single
+    toc: true
+    toc_sticky: true
     author_profile: true
-    read_time: true
     comments: true
     share: true
     related: true
+    show_date: true
 # _pages
 - scope:
     path: "_pages"
@@ -103,3 +106,9 @@ category_archive:
 tag_archive:
   type: liquid
   path: /tags/
+
+analytics:
+  provider: "google-gtag"
+  google:
+    tracking_id: "G-E2GMZZ1GVL"
+    anonymize_ip: false # default
