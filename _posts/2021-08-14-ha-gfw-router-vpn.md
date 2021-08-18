@@ -1,6 +1,6 @@
 ---
 title: 高可用性翻墙路由：2. VPN 的搭建
-date: 2021-08-14 10:00:00+08
+last_modified_at: 2021-08-18T00:00:00+08
 category: 技术
 tags: 网络 高可用性翻墙路由
 ---
@@ -9,8 +9,8 @@ tags: 网络 高可用性翻墙路由
 
 当你有了两台国外 VPS 和一台国内 VPS 后，可以在它们之间搭建如下的 VPN 网络：
 * 家（`10.0.0.1/30`） &harr; 国内 VPS（`10.0.0.2/30`）
-* 国内 VPS（`10.0.1.2/30`） &harr; 国外 VPS1（`10.0.1.2/30`）
-* 国内 VPS（`10.0.2.2/30`） &harr; 国外 VPS2（`10.0.2.2/30`）
+* 国内 VPS（`10.0.1.1/30`） &harr; 国外 VPS1（`10.0.1.2/30`）
+* 国内 VPS（`10.0.2.1/30`） &harr; 国外 VPS2（`10.0.2.2/30`）
 
 其中每条 VPN 连接分配一个 `/30` 的网段，相互之间不重叠。
 
@@ -118,7 +118,7 @@ WireGuard 支持通过同一个网络接口与多于一个 Peer 通信。其实�
 
 例如有三台主机 A、B、C，它们各自把另外两台主机加入自己的 Peer 列表中。如果 A 希望与 C 通信，那么它只能向 C 发送数据包，而不能绕道 A &rarr; B &rarr; C。在一般情况下这是没问题的，但如果 A 与 C 之间无法直接正常通信，就会导致两者之间完全断联。
 
-因此我们采用每个 WireGuard 网络接口只设置一个 Peer 的方式。此时只需把 `AllowedIPs` 设为 `0.0.0.0/0` 和 `::/0` 即可。而对于 VPN Mesh 中的路由问题，我们在[下一篇文章]({% post_url 2021-08-14-ha-gfw-router-ospf %})中通过 OSPF 解决。
+因此我们采用每个 WireGuard 网络接口只设置一个 Peer 的方式。此时只需把 `AllowedIPs` 设为 `0.0.0.0/0` 和 `::/0` 即可。而对于 VPN Mesh 中的路由问题，我们在[下一篇文章]({% post_url 2021-08-18-ha-gfw-router-ospf %})中通过 OSPF 解决。
 
 ### Linux
 
@@ -158,3 +158,7 @@ iface wg0 inet static
 防火墙方面，需要分别设置 WAN 的规则与 WG0 的规则。两者都在 **Firewall &raquo; Rules** 中。对于 WAN，需要允许 any 访问 This Firewall 的 UDP 51820 端口。对于 WG0，至少允许 ICMP 协议以便测试连通性。
 
 配置完成后可以在 **Status &raquo; WireGuard** 界面看到连接状态。并在 **Diagnostics &raquo; Ping** 页面中测试到对端的连通性。
+
+**上一篇文章：**[高可用性翻墙路由：1. pfSense 的安装]({% post_url 2021-08-13-ha-gfw-router-pfsense %})<br>
+**下一篇文章：**[高可用性翻墙路由：3. OSPF 与动态路由]({% post_url 2021-08-18-ha-gfw-router-ospf %})
+{: .notice}

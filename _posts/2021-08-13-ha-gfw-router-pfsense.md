@@ -1,5 +1,6 @@
 ---
 title: 高可用性翻墙路由：1. pfSense 的安装
+last_modified_at: 2021-08-18T00:00:00+08
 category: 技术
 tags: 网络 高可用性翻墙路由
 ---
@@ -91,3 +92,6 @@ IPv6
 ### SSH
 
 SSH 登录需要在 **System &raquo; Advanced &raquo; Admin Access** 中开启。而如果希望从公网登录，则还需要在 **Firewall &raquo; Rules &raquo; WAN** 中添加一项，允许任意地址到 **This Firewall** 的 TCP 22 端口访问。
+
+**下一篇文章：**[高可用性翻墙路由：2. VPN 的搭建]({% post_url 2021-08-14-ha-gfw-router-vpn %})
+{: .notice}
