@@ -1,5 +1,6 @@
 ---
 title: 高可用性翻墙路由：3. OSPF 与动态路由
+last_modified_at: 2021-09-17T00:00:00+08
 category: 技术
 tags: 网络 高可用性翻墙路由
 ---
@@ -17,7 +18,6 @@ OSPF
 首先确保 `/etc/sysctl.conf` 中 IP 转发已经开启。如果没有开启，可以加入如下内容后运行 `sysctl -p` 开启：
 ~~~~
 net.ipv4.ip_forward = 1
-net.ipv6.conf.all.forwarding = 1
 ~~~~
 
 另外也需要确保 Linux 内部的防火墙不会阻止 VPN 网络接口中的 OSPF 以及 ICMP 协议。
@@ -42,18 +42,12 @@ protocol ospf {
     import all;
     export all;
     area 0 {
-        interface "gre1" {
+        interface "xfrm0" {
             cost <花销>;
             type pointopoint;
             authentication cryptographic;
             password "<共享密钥>";
         };
-        interface "wg0" {
-            cost <花销>;
-            type pointopoint;
-            authentication cryptographic;
-            password "<共享密钥>";
-        }
         ……
     };
 }
@@ -70,7 +64,6 @@ bird> show ospf neighbor
 ospf1:
 Router ID  Pri State     DTime Interface  Router IP
 1.1.1.1    1   Full/PtP  00:36 gre1       1.1.1.1
-2.2.2.2    1   Full/PtP  00:39 wg0        2.2.2.2
 ~~~~
 当显示 **State** 为 **Full** 的时候说明两端交换路由信息成功。
 
@@ -97,7 +90,6 @@ pfSense 中同样需要保证 VPN 网络接口中的 OSPF 与 ICMP 协议不会�
 ~~~~
 Neighbor ID Pri  State        Dead Time  Address   Interface        RXmtL RqstL DBsmL
 1.1.1.1     1   Full/DROther  35.996s    10.0.0.1  tun_wg0:10.0.0.2 0     0     0
-2.2.2.2     1   Full/DROther  37.479s    10.0.1.1  tun_wg1:10.0.1.2 0     0     0
 ~~~~
 
 ### 测试
