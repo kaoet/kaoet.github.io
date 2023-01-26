@@ -1,6 +1,6 @@
 ---
 title: 高可用性翻墙路由：2. VPN 的搭建
-last_modified_at: 2021-09-17T00:00:00+08
+last_modified_at: 2022-09-17T00:00:00+08
 category: 技术
 tags: 网络 高可用性翻墙路由
 ---
